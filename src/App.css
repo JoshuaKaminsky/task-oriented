@@ -428,6 +428,7 @@ hr {
 
 .App {
     text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .App-title {
@@ -450,9 +451,12 @@ hr {
     margin-bottom: 5px;
 }
 
+.task-item ul {
+    padding-inline-start: 20px;
+}
+
 .todo-list-header {
     margin-bottom: 5px;
-    ;
 }
 
 .todo-input {
@@ -499,7 +503,7 @@ hr {
 .item-action-buttons {
     display: none;
     position: absolute;
-    top: 0;
+    top: 2px;
     right: 0;
 }
 
@@ -536,7 +540,16 @@ hr {
     text-align: center;
     cursor: pointer;
     border-color: #0078e7;
-    font-size: small;
+}
+
+.circle-btn.selected {
+    background-image: linear-gradient(transparent, rgba(0, 0, 0, .3) 40%, rgba(0, 0, 0, .45));
+}
+
+.circle-btn .MuiSvgIcon-root {
+    font-size: 1.5em;
+    color: white;
+    fill: white;
 }
 
 .btn {

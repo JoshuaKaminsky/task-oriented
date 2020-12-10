@@ -1,6 +1,9 @@
 /*global chrome*/
 
 import React, { Component, createRef } from "react";
+import ClockOutline from "mdi-material-ui/ClockOutline";
+import Check from "mdi-material-ui/Check";
+import Close from "mdi-material-ui/Close";
 import "./App.css";
 
 class App extends Component {
@@ -11,7 +14,6 @@ class App extends Component {
     this.addTodoItem = this.addTodoItem.bind(this);
     this.completeTodoItem = this.completeTodoItem.bind(this);
     this.removeTodoItem = this.removeTodoItem.bind(this);
-    this.resetCheckboxes = this.resetCheckboxes.bind(this);
     this.showHistory = this.showHistory.bind(this);
 
     this.checklistRef = createRef();
@@ -38,12 +40,6 @@ class App extends Component {
 
   uid() {
     return Date.now().toString(36) + Math.random().toString(36).substr(2);
-  }
-
-  resetCheckboxes() {
-    this.checklistRef.current.querySelectorAll("input").forEach(function (input) {
-      input.checked = false;
-    });
   }
 
   showHistory() {
@@ -106,23 +102,51 @@ class App extends Component {
   }
 
   render() {
-    var checkboxData = [
-      { value: "item1", label: "Set practice location" },
-      { value: "item2", label: "Get patient vitals" },
-      { value: "item3", label: "Review diagnoses" },
-      { value: "item4", label: "Review treatment plan" },
-      { value: "item5", label: "Review medication risks" },
-      { value: "item6", label: "Send medications" },
+    var reminderData = [
+      { label: "practice location" },
+      { label: "vitals" },
+      { label: "verify diagnoses" },
+      { label: "treatment plan" },
+      { label: "medication risks" },
+      { label: "send medications" },
     ];
 
-    var checkboxes = checkboxData.map(function (item, index) {
+    var reminders = reminderData.map(function (item, index) {
       return (
         <div className="task-item" key={"task-item-" + index}>
-          <input id={item.value} type="checkbox"></input>
-          <label htmlFor={item.value}> {item.label} </label>
+          <ul>
+            <li> {item.label} </li>
+          </ul>
         </div>
       );
     }, this);
+
+    var actionButtons = function (todoItem) {
+      if (!todoItem.completed) {
+        return (
+          <div className="item-action-buttons">
+            <button
+              className="circle-btn complete"
+              title="complete"
+              onClick={this.completeTodoItem.bind(null, todoItem.key)}
+            >
+              <Check />
+            </button>
+            <button className="circle-btn remove" title="remove" onClick={this.removeTodoItem.bind(null, todoItem.key)}>
+              <Close />
+            </button>
+          </div>
+        );
+      }
+
+      return (
+        <div className="item-action-buttons">
+          <button className="circle-btn remove" title="remove" onClick={this.removeTodoItem.bind(null, todoItem.key)}>
+            <Close />
+          </button>
+        </div>
+      );
+    }.bind(this);
 
     var todos = this.state.todos
       .filter(function (todoItem) {
@@ -136,22 +160,7 @@ class App extends Component {
             <div className="item-info">
               <div className="item-created">{new Date(todoItem.created).toLocaleString()}</div>
             </div>
-            <div className="item-action-buttons">
-              <button
-                className="circle-btn complete"
-                title="complete"
-                onClick={this.completeTodoItem.bind(null, todoItem.key)}
-              >
-                <span>✓</span>
-              </button>
-              <button
-                className="circle-btn remove"
-                title="remove"
-                onClick={this.removeTodoItem.bind(null, todoItem.key)}
-              >
-                <span>X</span>
-              </button>
-            </div>
+            {actionButtons(todoItem)}
           </div>
         );
       }, this);
@@ -161,22 +170,23 @@ class App extends Component {
         <header className="App-header">
           <h1 className="App-title">Task Oriented </h1>
         </header>
+
         <hr className="solid" />
+
         <div className="task-list" ref={this.checklistRef}>
-          <div className="task-list-header">
-            <button className="circle-btn" title="reset" onClick={this.resetCheckboxes}>
-              <span>R</span>
-            </button>
-          </div>
-          {checkboxes}
+          {reminders}
         </div>
 
         <hr className="solid" />
 
         <div className="todo-list">
           <div className="todo-list-header">
-            <button className="circle-btn" title="show history" onClick={this.showHistory}>
-              <span>A</span>
+            <button
+              className={"circle-btn " + (this.state.includeCompleted ? "selected" : "")}
+              title="show history"
+              onClick={this.showHistory}
+            >
+              <ClockOutline />
             </button>
           </div>
           <div className="todo-input">
