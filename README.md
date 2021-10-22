@@ -3,3 +3,7 @@
 Creates a pop-up side bar allowing for customization of 'always visible' and 'completable' todo items.
 
 Includes viewing of completed tasks.
+
+Dependencies:
+NodeJS 10+
+Yarn 1.22,17+ (npm install --global yarn)

@@ -4,19 +4,24 @@ import React, { Component, createRef } from "react";
 import ClockOutline from "mdi-material-ui/ClockOutline";
 import Check from "mdi-material-ui/Check";
 import Close from "mdi-material-ui/Close";
+import Edit from "mdi-material-ui/FileEdit";
 import "./App.css";
 
 class App extends Component {
+
   constructor(props) {
     super(props);
 
     this.uid = this.uid.bind(this);
     this.addTodoItem = this.addTodoItem.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.completeTodoItem = this.completeTodoItem.bind(this);
+    this.editTodoItem = this.editTodoItem.bind(this);
     this.removeTodoItem = this.removeTodoItem.bind(this);
     this.showHistory = this.showHistory.bind(this);
 
     this.checklistRef = createRef();
+    this.taskInputRef = createRef();
 
     this.state = { todos: [] };
 
@@ -59,8 +64,17 @@ class App extends Component {
       };
 
       event.target.value = "";
-      this.setState({ todos: [...this.state.todos, newItem] });
+      this.setState({ 
+        todos: [...this.state.todos, newItem],
+        currentTodoText: ""
+      });
     }
+  }
+
+  handleChange(event) {
+    this.setState({
+      currentTodoText: event.target.value
+    });
   }
 
   completeTodoItem(key) {
@@ -68,6 +82,7 @@ class App extends Component {
     var index = this.state.todos.findIndex(function (item) {
       return item.key === key;
     });
+
     if (index === -1) return;
 
     let todos = [...this.state.todos];
@@ -81,11 +96,27 @@ class App extends Component {
     this.setState({ todos: todos });
   }
 
+  editTodoItem(key) {
+    console.log("editing todo item");
+    var index = this.state.todos.findIndex(function (item) {
+      return item.key === key;
+    });
+
+    if (index === -1) return;
+
+    this.removeTodoItem(key);
+
+    this.setState({ currentTodoText: this.state.todos[index].text}, () => {
+      this.taskInputRef.current.focus();
+    });
+  }
+
   removeTodoItem(key) {
     console.log("removing todo item");
     var index = this.state.todos.findIndex(function (item) {
       return item.key === key;
     });
+
     if (index === -1) return;
 
     var todos = [...this.state.todos];
@@ -125,16 +156,18 @@ class App extends Component {
       if (!todoItem.completed) {
         return (
           <div className="item-action-buttons">
-            <button
-              className="circle-btn complete"
-              title="complete"
-              onClick={this.completeTodoItem.bind(null, todoItem.key)}
-            >
+            <button className="circle-btn complete" title="complete" onClick={this.completeTodoItem.bind(null, todoItem.key)}>
               <Check />
             </button>
+
+            <button className="circle-btn edit" title="edit" onClick={this.editTodoItem.bind(null, todoItem.key)}>
+              <Edit />
+            </button>
+            
             <button className="circle-btn remove" title="remove" onClick={this.removeTodoItem.bind(null, todoItem.key)}>
               <Close />
             </button>
+            
           </div>
         );
       }
@@ -181,16 +214,15 @@ class App extends Component {
 
         <div className="todo-list">
           <div className="todo-list-header">
-            <button
-              className={"circle-btn " + (this.state.includeCompleted ? "selected" : "")}
-              title="show history"
-              onClick={this.showHistory}
-            >
+            <button className={"circle-btn " + (this.state.includeCompleted ? "selected" : "")} title="show history" onClick={this.showHistory}>
               <ClockOutline />
             </button>
           </div>
           <div className="todo-input">
-            <input type="text" onKeyUp={this.addTodoItem}></input>
+            <input name="currentTodoText" type="text" value={this.state.currentTodoText} 
+            ref={this.taskInputRef}
+            onKeyUp={this.addTodoItem}
+            onChange={this.handleChange}></input>
           </div>
           {todos}
         </div>
