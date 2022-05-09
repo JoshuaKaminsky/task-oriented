@@ -3,8 +3,8 @@
 import React, { Component, createRef } from "react";
 import ClockOutline from "mdi-material-ui/ClockOutline";
 import Check from "mdi-material-ui/Check";
-import Close from "mdi-material-ui/Close";
-import Edit from "mdi-material-ui/FileEdit";
+import Close from "mdi-material-ui/TrashCan";
+import Edit from "mdi-material-ui/Pencil";
 import "./App.css";
 
 class App extends Component {
@@ -44,7 +44,7 @@ class App extends Component {
   }
 
   uid() {
-    return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    return Date.now().toString(36) + Math.random().toString(36).substring(2);
   }
 
   showHistory() {
@@ -133,24 +133,6 @@ class App extends Component {
   }
 
   render() {
-    var reminderData = [
-      { label: "practice location" },
-      { label: "vitals" },
-      { label: "verify diagnoses" },
-      { label: "treatment plan" },
-      { label: "medication risks" },
-      { label: "send medications" },
-    ];
-
-    var reminders = reminderData.map(function (item, index) {
-      return (
-        <div className="task-item" key={"task-item-" + index}>
-          <ul>
-            <li> {item.label} </li>
-          </ul>
-        </div>
-      );
-    }, this);
 
     var actionButtons = function (todoItem) {
       if (!todoItem.completed) {
@@ -201,14 +183,8 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <h1 className="App-title">Task Oriented </h1>
+          <h1 className="App-title">Taskey</h1>
         </header>
-
-        <hr className="solid" />
-
-        <div className="task-list" ref={this.checklistRef}>
-          {reminders}
-        </div>
 
         <hr className="solid" />
 

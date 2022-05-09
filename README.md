@@ -7,3 +7,14 @@ Includes viewing of completed tasks.
 Dependencies:
 NodeJS 10+
 Yarn 1.22,17+ (npm install --global yarn)
+
+
+
+BUILD 
+npm run build
+
+LOAD UNPACKED EXTENSION
+open chrome -> select manage extensions -> in developer mode, select 'Load unpacked'
+
+PACKAGE EXTENSION
+open chrome -> select manage extensions -> select 'Pack extenstion'

@@ -511,22 +511,18 @@ hr {
     margin: 0 5px;
 }
 
+.circle-btn:hover {
+    box-shadow: 3px 3px 10px black;
+}
+
 .item-action-buttons .complete {
     background-color: darkseagreen;
     border-color: darkseagreen;
 }
 
-.item-action-buttons .complete:hover {
-    background-image: linear-gradient(transparent, rgba(0, 0, 0, .05) 40%, rgba(0, 0, 0, .1));
-}
-
 .item-action-buttons .remove {
     background-color: firebrick;
     border-color: firebrick;
-}
-
-.item-action-buttons .remove:hover {
-    background-image: linear-gradient(transparent, rgba(0, 0, 0, .05) 40%, rgba(0, 0, 0, .1));
 }
 
 .circle-btn {
